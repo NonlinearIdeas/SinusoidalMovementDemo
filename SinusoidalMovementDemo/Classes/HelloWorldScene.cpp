@@ -9,11 +9,22 @@ using namespace CocosDenshion;
 const double SECONDS_PER_TICK = 1.0/60;
 const double DURATION = 8.0;     // Seconds for total animation.
 const double X_START = 100;      // Pixels
-const double Y_START = 300;      // Pixels
-const double X_STOP = 1000;      // Pixels
+const double Y_START = 200;      // Pixels
+const double X_STOP = 800;      // Pixels
 const double X_SPEED = (X_STOP-X_START)/DURATION;
 const double Y_PERIOD = 2.0;     // Seconds for y cycle.
 const double Y_HEIGHT = 100;
+const double LAUNCH_ANGLE = M_PI/4; // Angle for line.
+const CCPoint ANCHOR(X_START,Y_START);
+
+CCPoint RotatePointAboutAnchor(const CCPoint& pt,double theta,const CCPoint& anchor)
+{
+   double xPrime = cos(theta) * (pt.x-anchor.x) - sin(theta) * (pt.y-anchor.y) + anchor.x;
+   double yPrime = sin(theta) * (pt.x-anchor.x) + cos(theta) * (pt.y-anchor.y) + anchor.y;
+   
+   return CCPoint(xPrime,yPrime);
+}
+
 
 void HelloWorld::InitAnimation()
 {
@@ -28,10 +39,11 @@ void HelloWorld::UpdateAnimation()
       double seconds = _ticks*SECONDS_PER_TICK;
       double xPos = X_START + seconds*X_SPEED;
       double yPos = Y_START + Y_HEIGHT*sin(seconds*M_PI/Y_PERIOD);
+      CCPoint pos = RotatePointAboutAnchor(CCPoint(xPos,yPos), LAUNCH_ANGLE, ANCHOR);
       // Set the position of the sprite
-      _sprite->setPosition(CCPoint(xPos, yPos));
+      _sprite->setPosition(pos);
       
-      CCLOG("Tick: %d, Seconds: %5.2f, Position: (%f,%f)",_ticks,seconds,xPos,yPos);
+      CCLOG("Tick: %d, Seconds: %5.2f, Position: (%f,%f)",_ticks,seconds,pos.x,pos.y);
       if(_ticks%10 == 0)
       {  // Add a trail
          CCSprite* marker = CCSprite::create("Icon-72.png");
@@ -48,9 +60,20 @@ void HelloWorld::UpdateAnimation()
 void HelloWorld::draw()
 {
    CCLayer::draw();
-   ccDrawLine(CCPoint(X_START,Y_START), CCPoint(X_STOP,Y_START));
-   ccDrawLine(CCPoint(X_START,Y_START+Y_HEIGHT), CCPoint(X_STOP,Y_START+Y_HEIGHT));
-   ccDrawLine(CCPoint(X_START,Y_START-Y_HEIGHT), CCPoint(X_STOP,Y_START-Y_HEIGHT));
+   CCPoint start;
+   CCPoint stop;
+   
+   start = RotatePointAboutAnchor(CCPoint(X_START,Y_START), LAUNCH_ANGLE, ANCHOR);
+   stop = RotatePointAboutAnchor(CCPoint(X_STOP,Y_START), LAUNCH_ANGLE, ANCHOR);
+   ccDrawLine(start,stop);
+   
+   start = RotatePointAboutAnchor(CCPoint(X_START,Y_START+Y_HEIGHT), LAUNCH_ANGLE, ANCHOR);
+   stop = RotatePointAboutAnchor(CCPoint(X_STOP,Y_START+Y_HEIGHT), LAUNCH_ANGLE, ANCHOR);
+   ccDrawLine(start,stop);
+
+   start = RotatePointAboutAnchor(CCPoint(X_START,Y_START-Y_HEIGHT), LAUNCH_ANGLE, ANCHOR);
+   stop = RotatePointAboutAnchor(CCPoint(X_STOP,Y_START-Y_HEIGHT), LAUNCH_ANGLE, ANCHOR);
+   ccDrawLine(start,stop);
 }
 
 void HelloWorld::onEnterTransitionDidFinish()
