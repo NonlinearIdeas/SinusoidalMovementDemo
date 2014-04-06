@@ -2516,7 +2516,6 @@
 					"-lxml2",
 					"-lz",
 					"-lsqlite3",
-					"-websockets",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = "\"SinusoidalMovementDemo/libs/Chipmunk/include/chipmunk\"";
@@ -2542,7 +2541,6 @@
 					"-lxml2",
 					"-lz",
 					"-lsqlite3",
-					"-websockets",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = "\"SinusoidalMovementDemo/libs/Chipmunk/include/chipmunk\"";
@@ -2570,6 +2568,7 @@
 				1A9D35AC18F17D120088F2FE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

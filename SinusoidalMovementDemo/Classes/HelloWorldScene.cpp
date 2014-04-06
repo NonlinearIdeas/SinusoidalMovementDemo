@@ -28,10 +28,20 @@ void HelloWorld::UpdateAnimation()
       double seconds = _ticks*SECONDS_PER_TICK;
       double xPos = X_START + seconds*X_SPEED;
       double yPos = Y_START + Y_HEIGHT*sin(seconds*M_PI/Y_PERIOD);
-      CCLOG("Tick: %d, Seconds: %5.2f, Position: (%f,%f)",_ticks,seconds,xPos,yPos);
-      _ticks++;
       // Set the position of the sprite
       _sprite->setPosition(CCPoint(xPos, yPos));
+      
+      CCLOG("Tick: %d, Seconds: %5.2f, Position: (%f,%f)",_ticks,seconds,xPos,yPos);
+      if(_ticks%10 == 0)
+      {  // Add a trail
+         CCSprite* marker = CCSprite::create("Icon-72.png");
+         marker->setScale(0.1);
+         marker->setPosition(_sprite->getPosition());
+         marker->setZOrder(50);
+         addChild(marker);
+      }
+      // Increment the ticks count for next time.
+      _ticks++;
    }
 }
 
@@ -123,6 +133,7 @@ bool HelloWorld::init()
    // Add a sprite to move around
    _sprite = CCSprite::create("Icon-72.png");
    _sprite->setScale(0.5);
+   _sprite->setZOrder(100);
    this->addChild(_sprite);
    
    return true;
