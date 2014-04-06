@@ -26,12 +26,21 @@ void HelloWorld::UpdateAnimation()
    if(_ticks <= _ticksTotal)
    {
       double seconds = _ticks*SECONDS_PER_TICK;
-      double xPos = seconds*X_SPEED;
+      double xPos = X_START + seconds*X_SPEED;
       double yPos = Y_START + Y_HEIGHT*sin(seconds*M_PI/Y_PERIOD);
-      _sprite->setPosition(CCPoint(xPos, yPos));
       CCLOG("Tick: %d, Seconds: %5.2f, Position: (%f,%f)",_ticks,seconds,xPos,yPos);
       _ticks++;
+      // Set the position of the sprite
+      _sprite->setPosition(CCPoint(xPos, yPos));
    }
+}
+
+void HelloWorld::draw()
+{
+   CCLayer::draw();
+   ccDrawLine(CCPoint(X_START,Y_START), CCPoint(X_STOP,Y_START));
+   ccDrawLine(CCPoint(X_START,Y_START+Y_HEIGHT), CCPoint(X_STOP,Y_START+Y_HEIGHT));
+   ccDrawLine(CCPoint(X_START,Y_START-Y_HEIGHT), CCPoint(X_STOP,Y_START-Y_HEIGHT));
 }
 
 void HelloWorld::onEnterTransitionDidFinish()
@@ -110,14 +119,6 @@ bool HelloWorld::init()
    // add the label as a child to this layer
    this->addChild(pLabel, 1);
    
-   // add "HelloWorld" splash screen"
-   CCSprite* pSprite = CCSprite::create("HelloWorld.png");
-   
-   // position the sprite on the center of the screen
-   pSprite->setPosition( ccp(size.width/2, size.height/2) );
-   
-   // add the sprite as a child to this layer
-   this->addChild(pSprite, 0);
    
    // Add a sprite to move around
    _sprite = CCSprite::create("Icon-72.png");
