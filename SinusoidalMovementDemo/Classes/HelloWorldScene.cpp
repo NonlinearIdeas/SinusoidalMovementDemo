@@ -12,7 +12,7 @@ const double X_START = 100;      // Pixels
 const double Y_START = 200;      // Pixels
 const double X_STOP = 800;      // Pixels
 const double X_SPEED = (X_STOP-X_START)/DURATION;
-const double Y_PERIOD = 2.0;     // Seconds for y cycle.
+const double Y_PERIOD = 4.0;     // Seconds for y cycle.
 const double Y_HEIGHT = 100;
 const double LAUNCH_ANGLE = M_PI/4; // Angle for line.
 const CCPoint ANCHOR(X_START,Y_START);
@@ -38,7 +38,7 @@ void HelloWorld::UpdateAnimation()
    {
       double seconds = _ticks*SECONDS_PER_TICK;
       double xPos = X_START + seconds*X_SPEED;
-      double yPos = Y_START + Y_HEIGHT*sin(seconds*M_PI/Y_PERIOD);
+      double yPos = Y_START + Y_HEIGHT*sin(seconds*2*M_PI/Y_PERIOD);
       CCPoint pos = RotatePointAboutAnchor(CCPoint(xPos,yPos), LAUNCH_ANGLE, ANCHOR);
       // Set the position of the sprite
       _sprite->setPosition(pos);
